@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://adm:123@localhost:27017/product-service?authSource=admin
