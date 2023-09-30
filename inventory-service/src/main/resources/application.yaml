@@ -7,6 +7,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-      
+  application:
+    name: inventory-service
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka # Para que o client possa encontrar o Eureka Server   
 server:
-  port: 8082
+  port: 0
