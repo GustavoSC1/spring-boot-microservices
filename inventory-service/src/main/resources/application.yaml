@@ -1,3 +1,5 @@
+server:
+  port: 8082 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,7 +13,5 @@ spring:
     name: inventory-service
 eureka:
   client:
-    service-url:
-      default-zone: http://localhost:8761/eureka # Para que o client possa encontrar o Eureka Server   
-server:
-  port: 8082
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka

@@ -2,7 +2,15 @@ server:
   port: 8765
 spring:
   application:
-    name: order-service
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver: 
+        jwt:
+          # Especifica qual servidor de autorização está sendo usado
+          # Este servidor de recursos usa essa propriedade para autoconfigurar-se ainda mais, descobrir as 
+          # chaves públicas do servidor de autorização e, posteriormente, validar os JWTs recebidos
+          issuer-uri: http://localhost:8181/realms/spring-boot-microservices-realm
   cloud:
     gateway:
       routes:
@@ -30,11 +38,13 @@ spring:
         uri: http://localhost:8761
         predicates: 
         - Path=/eureka/**
-    
+
+app:
+  eureka-server: localhost
 eureka:
   client:
-    service-url:
-      default-zone: http://localhost:8761/eureka
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka
 
 logging:
   level:
