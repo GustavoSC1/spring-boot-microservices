@@ -9,6 +9,7 @@ import com.gustavo.inventoryservice.dto.InventoryResponse;
 import com.gustavo.inventoryservice.repository.InventoryRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,8 @@ public class InventoryService {
 	private final InventoryRepository inventoryRepository;
 	
 	@Transactional(readOnly = true)
-	public List<InventoryResponse> isInStock(List<String> skuCode) {
+	@SneakyThrows
+	public List<InventoryResponse> isInStock(List<String> skuCode) {		
 		return inventoryRepository.findBySkuCodeIn(skuCode).stream()
 				.map(inventory -> 
 					InventoryResponse.builder()

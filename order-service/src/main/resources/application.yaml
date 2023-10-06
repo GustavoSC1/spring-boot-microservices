@@ -15,5 +15,51 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8761/eureka
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+      
+
+resilience4j:  
+  # Resilinece4j Properties
+  circuitbreaker:
+    instances:
+      inventory:
+        # Indicador de integridade para ver diferentes estados do Circuit Breaker (Ex: no /actuator/health)
+        registerHealthIndicator: true
+        # Quanto tamanho de buffer para eventos
+        event-consumer-buffer-size: 10
+        # Não abra o CB imediatamente, espere que algumas solicitações falharem
+        slidingWindowType: COUNT_BASED
+        # Após 5 solicitações com falha, o disjuntor tentará mudar do estado fechado para aberto
+        slidingWindowSize: 5
+        # 50% das chamadas falharam
+        failureRateThreshold: 50
+        # Quanto tempo esperar no estado aberto antes de entrar no meio aberto
+        waitDurationInOpenState: 5s
+        # Quantas chamadas bem-sucedidas no estado estado semiaberto são necessárias para mudar para fechado
+        permittedNumberOfCallsInHalfOpenState: 3
+        # Habilitar a transição automática de aberto para meio aberto
+        automaticTransitionFromOpenToHalfOpenEnabled: true     
+  # Resilience4J Timeout Properties
+  timelimiter:
+    instances:
+      inventory:
+        # timeout exception após 3 segundos executado sem resposta
+        timeout-duration: 3s
+  # Resilience4J Retry Properties
+  retry:
+    instances:
+      inventory:
+        max-attempts: 3 # Quantas tentativas o retry vai fazer
+        wait-duration: 5s # Tempo de espera entre cada tentativa
 
   
