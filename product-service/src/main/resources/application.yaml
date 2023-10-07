@@ -4,7 +4,16 @@ spring:
       uri: mongodb://adm:123@localhost:27017/product-service?authSource=admin
   application:
     name: product-service
+    
 eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8761/eureka
+      
+management:
+  zipkin: 
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0

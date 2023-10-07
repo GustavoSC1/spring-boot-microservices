@@ -1,5 +1,6 @@
 server:
   port: 8081
+  
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,10 +12,12 @@ spring:
       ddl-auto: update
   application:
     name: order-service
+    
 eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8761/eureka
+      
 management:
   health:
     circuitbreakers:
@@ -26,8 +29,13 @@ management:
   endpoint:
     health:
       show-details: always
+  zipkin: 
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
       
-
 resilience4j:  
   # Resilinece4j Properties
   circuitbreaker:
@@ -61,5 +69,4 @@ resilience4j:
       inventory:
         max-attempts: 3 # Quantas tentativas o retry vai fazer
         wait-duration: 5s # Tempo de espera entre cada tentativa
-
-  
+        
