@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.gustavo.orderservice.dto.InventoryResponse;
 import com.gustavo.orderservice.dto.OrderLineItemsDto;
 import com.gustavo.orderservice.dto.OrderRequest;
+import com.gustavo.orderservice.event.OrderPlacedEvent;
 import com.gustavo.orderservice.model.Order;
 import com.gustavo.orderservice.model.OrderLineItems;
 import com.gustavo.orderservice.repository.OrderRepository;
@@ -24,6 +26,7 @@ public class OrderService {
 	
 	private final OrderRepository orderRepository;
 	private final WebClient.Builder webClientBuilder;
+	private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 		
 	public String placeOrder(OrderRequest orderRequest) {
 		Order order = new Order();
@@ -40,8 +43,7 @@ public class OrderService {
 				.map(OrderLineItems::getSkuCode)
 				.toList();
 		
-		// Call Inventory Service, and place order if product is in
-		// stock
+		// Consulte o Inventory Service e faça o pedido se o produto estiver em estoque
 		InventoryResponse[] inventoryResponsArray = webClientBuilder.build().get()
 				.uri("http://inventory-service/api/inventory",
 						uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
@@ -54,6 +56,7 @@ public class OrderService {
 		
 		if(allProductsInStock) {
 			orderRepository.save(order);
+			kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
 			return "Order Placed Sucessfully";
 		} else {
 			throw new IllegalArgumentException("Product is not in stock, please try again later");

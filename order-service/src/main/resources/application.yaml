@@ -12,7 +12,20 @@ spring:
       ddl-auto: update
   application:
     name: order-service
-    
+  # Kafka Properties
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: notificationTopic
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: event:com.gustavo.orderservice.event.OrderPlacedEvent
+              
 eureka:
   client:
     serviceUrl:
@@ -69,4 +82,5 @@ resilience4j:
       inventory:
         max-attempts: 3 # Quantas tentativas o retry vai fazer
         wait-duration: 5s # Tempo de espera entre cada tentativa
+        
         
