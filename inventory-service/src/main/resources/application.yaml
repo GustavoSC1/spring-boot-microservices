@@ -1,6 +1,8 @@
 server:
   port: 8082 
 spring:
+  application:
+    name: inventory-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/inventory_service
@@ -9,8 +11,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-  application:
-    name: inventory-service
     
 eureka:
   client:
@@ -24,3 +24,13 @@ management:
   tracing:
     sampling:
       probability: 1.0
+  # Actuator Prometheus Endpoint
+  endpoints:
+    web:
+      exposure:
+        include: prometheus # /actuator/prometheus
+        
+logging:
+  pattern: # Inclui o traceid e o spanid atuais nos logs
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+        

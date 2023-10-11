@@ -83,4 +83,8 @@ resilience4j:
         max-attempts: 3 # Quantas tentativas o retry vai fazer
         wait-duration: 5s # Tempo de espera entre cada tentativa
         
+logging:
+  pattern: # Inclui o traceid e o spanid atuais nos logs
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+        
         

@@ -11,6 +11,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
       
 spring:
+  application:
+    name: discovery-server
   security:
     user:
       name: eureka
@@ -23,3 +25,17 @@ management:
   tracing:
     sampling:
       probability: 1.0
+  # Actuator Prometheus Endpoint
+  endpoints:
+    web:
+      exposure:
+        include: prometheus # /actuator/prometheus
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+        
