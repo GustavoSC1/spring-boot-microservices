@@ -1,10 +1,11 @@
 server:
-  port: 0
+  port: 8100
 
 spring:
   data:
     mongodb:
-      uri: mongodb://adm:123@localhost:27017/product-service?authSource=admin
+      host: localhost:27017
+      database: product-service
   application:
     name: product-service
     

@@ -45,25 +45,7 @@ public class OrderService {
 		List<String> skuCodes = order.getOrderLineItemsList().stream()
 				.map(OrderLineItems::getSkuCode)
 				.toList();
-		/*
-		// Consulte o Inventory Service e faça o pedido se o produto estiver em estoque
-		InventoryResponse[] inventoryResponsArray = webClientBuilder.build().get()
-				.uri("http://inventory-service/api/inventory",
-						uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
-				.retrieve()
-				.bodyToMono(InventoryResponse[].class)
-				.block(); // Adicionando block o WebClient fará uma solicitação sincrona
-		
-		boolean allProductsInStock = Arrays.stream(inventoryResponsArray)
-				.allMatch(InventoryResponse::isInStock);
-		
-		if(allProductsInStock) {
-			orderRepository.save(order);
-			kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
-			return "Order Placed Sucessfully";
-		} else {
-			throw new IllegalArgumentException("Product is not in stock, please try again later");
-		}		*/
+
 		 Observation inventoryServiceObservation = Observation.createNotStarted("inventory-service-lookup",
 	                this.observationRegistry);
 	        inventoryServiceObservation.lowCardinalityKeyValue("call", "inventory-service");
