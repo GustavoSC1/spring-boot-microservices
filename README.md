@@ -25,6 +25,11 @@ Os diferentes serviços que foram construidos nesse projeto:
 
 ## Arquitetura
 
+![Arquitetura](https://ik.imagekit.io/gustavosc/Microservices-new/Arquitetura_LBrFtCau4.png?updatedAt=1697404335780)
+![Service Discovery](https://ik.imagekit.io/gustavosc/Microservices-new/Service%20Discovery_4D4ez8hPj.png?updatedAt=1697404951971)
+![Copy of Service Registry](https://ik.imagekit.io/gustavosc/Microservices-new/Copy%20of%20Service%20Registry_lLC4R-Q-h.png?updatedAt=1697404951432)
+![Distributed Tracing](https://ik.imagekit.io/gustavosc/Microservices-new/Distributed%20Tracing_60AzGbRwe.png?updatedAt=1697405136549)
+
 ## Tecnologias utilizadas
 
 - [Java 17](https://www.oracle.com/java/)
